@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#F2EEE5"/>
+  <!-- F letterform -->
+  <text x="200" y="270"
+        font-family="Georgia, serif"
+        font-size="260"
+        font-weight="700"
+        text-anchor="middle"
+        fill="#0A0A0A">F</text>
+  <!-- Hairline rule -->
+  <line x1="60" y1="308" x2="340" y2="308" stroke="#0A0A0A" stroke-width="0.8" opacity="0.4"/>
+  <!-- Sub-label -->
+  <text x="200" y="330"
+        font-family="monospace"
+        font-size="13"
+        letter-spacing="6"
+        text-anchor="middle"
+        fill="#0A0A0A"
+        opacity="0.6">FOUNDRY / STUDIO</text>
+</svg>

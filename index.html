@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Foundry Studio — We compose brand systems, AI imagery, real-time 3D, and scroll motion. Four primitives. One loop." />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="Foundry Studio — Compose. Not Assemble." />
+  <meta property="og:description" content="We build brand systems for founders who understand that tempo is the brand." />
+  <meta property="og:image"       content="/assets/og-image.jpg" />
+
+  <title>Foundry Studio — Compose. Not Assemble.</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512.png" />
+
+  <!-- Design tokens loaded first — all component styles inherit from these -->
+  <link rel="stylesheet" href="/src/styles/tokens.css" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+
+  <!-- Preload critical assets -->
+  <link rel="preload" as="image" href="/assets/displacement.png" />
+</head>
+<body>
+
+  <!-- ========================================================
+       LOADER
+       ======================================================== -->
+  <div id="loader" aria-hidden="true" role="presentation">
+    <div class="loader-count">
+      <span id="loader-num">0</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       NAVIGATION
+       ======================================================== -->
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="/" class="nav-mark" aria-label="Foundry Studio — home">
+      <span class="nav-f">F</span>
+      <span>Foundry Studio</span>
+    </a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div class="nav-status">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span>Available</span>
+    </div>
+  </nav>
+
+  <!-- Custom cursor -->
+  <div class="cursor-dot"  aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Grain noise overlay -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Page progress indicator -->
+  <div class="progress-bar" role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-fill"></div>
+  </div>
+
+  <!-- ========================================================
+       HERO — Split text layout, torus centered
+       ======================================================== -->
+  <section class="hero" id="hero" aria-label="Hero">
+    <canvas id="canvas" aria-hidden="true"></canvas>
+
+    <!-- Left column — anchored bottom-left -->
+    <div class="hero-left">
+      <div class="hero-badge label" aria-hidden="true">
+        <span class="hero-badge-dot"></span>
+        <span>Available — 2026</span>
+      </div>
+      <h1 class="hero-left-text" aria-label="We compose cinema.">
+        <span class="word"><span>We</span></span>
+        <br>
+        <span class="word"><span>compose</span></span>
+      </h1>
+      <div class="hero-meta">
+        <a href="#contact" class="hero-contact-btn label" aria-label="Contact us">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Contact us</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right column — anchored mid-right -->
+    <div class="hero-right">
+      <p class="hero-right-text">
+        <span class="word word--accent"><span>Cinema.</span></span>
+      </p>
+      <p class="hero-tagline label">
+        <span class="hero-tagline-word"><span>Brand systems</span></span>
+        <span class="hero-tagline-word"><span>that move.</span></span>
+      </p>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <div class="scroll-line"></div>
+      <span class="label">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       MARQUEE TICKER
+       ======================================================== -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" data-skew>
+      <span class="marquee-item">Compose</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Not Assemble</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Brand Systems</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Motion Direction</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Real-time 3D</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">AI Assets</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Scroll Choreography</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Tempo Is The Brand</span><span class="marquee-sep">·</span>
+      <!-- duplicate for seamless loop -->
+      <span class="marquee-item">Compose</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Not Assemble</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Brand Systems</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Motion Direction</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Real-time 3D</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">AI Assets</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Scroll Choreography</span><span class="marquee-sep">·</span>
+      <span class="marquee-item">Tempo Is The Brand</span><span class="marquee-sep">·</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       INTRO STATEMENT — Dramatic cream panel
+       ======================================================== -->
+  <section class="intro" id="work" aria-label="Introduction">
+    <div class="intro-inner">
+      <p class="intro-line">
+        <span class="intro-word"><span>Brand</span></span>
+        <span class="intro-word"><span>systems</span></span>
+        <span class="intro-word intro-word--rule"><span>built</span></span>
+      </p>
+      <p class="intro-line">
+        <span class="intro-word"><span>for</span></span>
+        <span class="intro-word intro-word--accent"><span>founders</span></span>
+      </p>
+      <p class="intro-line">
+        <span class="intro-word"><span>who</span></span>
+        <span class="intro-word"><span>move</span></span>
+        <span class="intro-word"><span>fast.</span></span>
+      </p>
+    </div>
+
+    <div class="intro-sub">
+      <span class="label">Four primitives. One loop. Shipped.</span>
+    </div>
+
+    <!-- Four primitives strip -->
+    <div class="intro-primitives" aria-label="Our four primitives">
+      <div class="intro-prim">
+        <span class="intro-prim-num label">01</span>
+        <span class="intro-prim-rule" aria-hidden="true"></span>
+        <strong class="intro-prim-name">Design System</strong>
+        <span class="intro-prim-sub label">Tokens · Components · Grammar</span>
+      </div>
+      <div class="intro-prim">
+        <span class="intro-prim-num label">02</span>
+        <span class="intro-prim-rule" aria-hidden="true"></span>
+        <strong class="intro-prim-name">Asset Forge</strong>
+        <span class="intro-prim-sub label">AI · Editorial · Intent</span>
+      </div>
+      <div class="intro-prim">
+        <span class="intro-prim-num label">03</span>
+        <span class="intro-prim-rule" aria-hidden="true"></span>
+        <strong class="intro-prim-name">Runtime Layer</strong>
+        <span class="intro-prim-sub label">60fps · WebGL · Three.js</span>
+      </div>
+      <div class="intro-prim">
+        <span class="intro-prim-num label">04</span>
+        <span class="intro-prim-rule" aria-hidden="true"></span>
+        <strong class="intro-prim-name">Motion Director</strong>
+        <span class="intro-prim-sub label">Scroll · Tempo · Choreography</span>
+      </div>
+    </div>
+
+    <!-- Pull quote -->
+    <div class="intro-quote" aria-hidden="true">
+      <blockquote class="intro-blockquote">
+        "Tempo is not a feature.<br>It is the brand."
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       STATS — Animated counters
+       ======================================================== -->
+  <section class="stats" aria-label="Studio statistics">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <p class="stat-num" data-target="87" data-suffix="+">0</p>
+        <p class="stat-label label">Projects shipped</p>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item">
+        <p class="stat-num" data-target="6" data-suffix=" yrs">0</p>
+        <p class="stat-label label">Studio running</p>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item">
+        <p class="stat-num">∞</p>
+        <p class="stat-label label">Frames rendered</p>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item">
+        <p class="stat-num" data-target="14" data-suffix="+">0</p>
+        <p class="stat-label label">Countries reached</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       CAPABILITIES — 6 service cards with SVG icons
+       ======================================================== -->
+  <section class="caps" aria-label="Capabilities">
+    <div class="caps-header">
+      <span class="label caps-eyebrow">— Capabilities</span>
+      <h2 class="caps-heading">
+        Six disciplines.<br>
+        <span class="caps-heading-accent">One studio.</span>
+      </h2>
+      <p class="caps-sub">From the first sketch to the live frame — we own the full stack.</p>
+    </div>
+
+    <div class="caps-grid">
+
+      <article class="cap-card">
+        <div class="cap-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="4" y="4" width="10" height="10"/><rect x="18" y="4" width="10" height="10"/>
+            <rect x="4" y="18" width="10" height="10"/><rect x="18" y="18" width="10" height="10"/>
+          </svg>
+        </div>
+        <h3 class="cap-title">Brand Identity</h3>
+        <p class="cap-desc">Strategy, naming, marks, type stacks. The signal you broadcast.</p>
+        <ul class="cap-list label">
+          <li>Visual identity</li>
+          <li>Brand strategy</li>
+          <li>Type systems</li>
+        </ul>
+      </article>
+
+      <article class="cap-card">
+        <div class="cap-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M4 24 Q 12 4, 20 16 T 28 12"/>
+            <circle cx="28" cy="12" r="2" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3 class="cap-title">Motion Design</h3>
+        <p class="cap-desc">Choreography, not animation. Tempo as a brand asset.</p>
+        <ul class="cap-list label">
+          <li>Scroll choreography</li>
+          <li>Microinteractions</li>
+          <li>Timing systems</li>
+        </ul>
+      </article>
+
+      <article class="cap-card">
+        <div class="cap-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M16 4 L28 11 L28 21 L16 28 L4 21 L4 11 Z"/>
+            <path d="M16 4 L16 28 M4 11 L28 21 M28 11 L4 21" opacity="0.5"/>
+          </svg>
+        </div>
+        <h3 class="cap-title">Real-time 3D</h3>
+        <p class="cap-desc">WebGL, GLSL, particle systems. Pixels with physics.</p>
+        <ul class="cap-list label">
+          <li>Three.js / R3F</li>
+          <li>Custom shaders</li>
+          <li>60fps anywhere</li>
+        </ul>
+      </article>
+
+      <article class="cap-card">
+        <div class="cap-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M16 4 L20 12 L28 16 L20 20 L16 28 L12 20 L4 16 L12 12 Z"/>
+          </svg>
+        </div>
+        <h3 class="cap-title">AI Asset Forge</h3>
+        <p class="cap-desc">Generated imagery with editorial intent baked in.</p>
+        <ul class="cap-list label">
+          <li>Prompt engineering</li>
+          <li>Style consistency</li>
+          <li>Asset pipelines</li>
+        </ul>
+      </article>
+
+      <article class="cap-card">
+        <div class="cap-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M10 8 L4 16 L10 24 M22 8 L28 16 L22 24"/>
+            <line x1="18" y1="6" x2="14" y2="26"/>
+          </svg>
+        </div>
+        <h3 class="cap-title">Frontend Engineering</h3>
+        <p class="cap-desc">Performant builds. Accessible by default. Ship-quality code.</p>
+        <ul class="cap-list label">
+          <li>Vite / Next.js</li>
+          <li>TypeScript</li>
+          <li>Edge deploys</li>
+        </ul>
+      </article>
+
+      <article class="cap-card">
+        <div class="cap-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="6" y="6" width="20" height="20"/>
+            <rect x="10" y="10" width="12" height="12"/>
+            <rect x="14" y="14" width="4" height="4" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3 class="cap-title">Design Systems</h3>
+        <p class="cap-desc">Tokens, components, documentation. Build fast forever.</p>
+        <ul class="cap-list label">
+          <li>Token architecture</li>
+          <li>Component libraries</li>
+          <li>Living docs</li>
+        </ul>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SELECTED WORK — Three project cards
+       ======================================================== -->
+  <section class="work" aria-label="Selected work">
+    <div class="work-header">
+      <div class="work-header-left">
+        <span class="label work-eyebrow">— Selected work</span>
+        <h2 class="work-heading">
+          <span class="word"><span>Recent</span></span><br>
+          <span class="word word--accent"><span>projects.</span></span>
+        </h2>
+      </div>
+      <a href="#contact" class="cta-pill work-cta">
+        <span class="label">Start a project</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="work-grid">
+
+      <article class="work-card" data-index="01">
+        <div class="work-card-visual">
+          <div class="work-card-bg work-card-bg--indigo" aria-hidden="true"></div>
+          <img class="work-card-img" src="/assets/work-auro.jpg" alt="" loading="lazy" />
+          <span class="work-card-num label" aria-hidden="true">01</span>
+          <div class="work-card-grid-overlay" aria-hidden="true"></div>
+          <div class="work-card-view" aria-hidden="true">
+            <span class="work-card-view-label">View Case →</span>
+          </div>
+        </div>
+        <div class="work-card-body">
+          <div class="work-card-tags">
+            <span class="label work-tag">Runtime Layer</span>
+            <span class="label work-tag">Motion Director</span>
+          </div>
+          <h3 class="work-card-title">Auro</h3>
+          <p class="work-card-desc">Real-time 3D brand world for an AI infrastructure company. 60fps. Zero compromise.</p>
+          <div class="work-card-footer">
+            <span class="label work-card-year">2024</span>
+            <a href="#" class="work-card-link label">View case <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="work-card" data-index="02">
+        <div class="work-card-visual">
+          <div class="work-card-bg work-card-bg--forest" aria-hidden="true"></div>
+          <img class="work-card-img" src="/assets/work-verdant.jpg" alt="" loading="lazy" />
+          <span class="work-card-num label" aria-hidden="true">02</span>
+          <div class="work-card-grid-overlay" aria-hidden="true"></div>
+          <div class="work-card-view" aria-hidden="true">
+            <span class="work-card-view-label">View Case →</span>
+          </div>
+        </div>
+        <div class="work-card-body">
+          <div class="work-card-tags">
+            <span class="label work-tag">Design System</span>
+            <span class="label work-tag">Motion Director</span>
+          </div>
+          <h3 class="work-card-title">Verdant</h3>
+          <p class="work-card-desc">Scroll-choreographed launch for a sustainable growth fund. Tempo as proof of intent.</p>
+          <div class="work-card-footer">
+            <span class="label work-card-year">2024</span>
+            <a href="#" class="work-card-link label">View case <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="work-card" data-index="03">
+        <div class="work-card-visual">
+          <div class="work-card-bg work-card-bg--ember" aria-hidden="true"></div>
+          <img class="work-card-img" src="/assets/work-circuit.jpg" alt="" loading="lazy" />
+          <span class="work-card-num label" aria-hidden="true">03</span>
+          <div class="work-card-grid-overlay" aria-hidden="true"></div>
+          <div class="work-card-view" aria-hidden="true">
+            <span class="work-card-view-label">View Case →</span>
+          </div>
+        </div>
+        <div class="work-card-body">
+          <div class="work-card-tags">
+            <span class="label work-tag">Design System</span>
+            <span class="label work-tag">Asset Forge</span>
+          </div>
+          <h3 class="work-card-title">Circuit</h3>
+          <p class="work-card-desc">Full identity system with AI asset suite for a quantum computing startup. Made to ship.</p>
+          <div class="work-card-footer">
+            <span class="label work-card-year">2023</span>
+            <a href="#" class="work-card-link label">View case <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="work-card" data-index="04">
+        <div class="work-card-visual">
+          <div class="work-card-bg work-card-bg--slate" aria-hidden="true"></div>
+          <img class="work-card-img" src="/assets/work-lux.jpg" alt="" loading="lazy" />
+          <span class="work-card-num label" aria-hidden="true">04</span>
+          <div class="work-card-grid-overlay" aria-hidden="true"></div>
+          <div class="work-card-view" aria-hidden="true">
+            <span class="work-card-view-label">View Case →</span>
+          </div>
+        </div>
+        <div class="work-card-body">
+          <div class="work-card-tags">
+            <span class="label work-tag">Runtime Layer</span>
+            <span class="label work-tag">Asset Forge</span>
+          </div>
+          <h3 class="work-card-title">Lux</h3>
+          <p class="work-card-desc">Immersive WebGL brand world for a luxury hospitality group. Editorial AI imagery. Every frame deliberate.</p>
+          <div class="work-card-footer">
+            <span class="label work-card-year">2025</span>
+            <a href="#" class="work-card-link label">View case <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       WHY FOUNDRY — Three differentiators, editorial list
+       ======================================================== -->
+  <section class="why" aria-label="Why choose Foundry Studio">
+    <div class="why-header">
+      <span class="label why-eyebrow">— Why Foundry</span>
+      <h2 class="why-heading">
+        <span class="why-word"><span>Built</span></span>
+        <span class="why-word why-word--accent"><span>different.</span></span>
+      </h2>
+    </div>
+
+    <ul class="why-list" role="list">
+
+      <li class="why-item">
+        <span class="why-num label">01</span>
+        <div class="why-item-inner">
+          <h3 class="why-title">We embed,<br>not consult.</h3>
+          <p class="why-body">We work inside your momentum — not from a slide deck outside it. Your tempo becomes our tempo. Your launch deadline is ours.</p>
+        </div>
+        <div class="why-tags">
+          <span class="label why-tag">Embedded team</span>
+          <span class="label why-tag">No handoffs</span>
+          <span class="label why-tag">Direct slack</span>
+        </div>
+      </li>
+
+      <li class="why-item">
+        <span class="why-num label">02</span>
+        <div class="why-item-inner">
+          <h3 class="why-title">Production<br>from day one.</h3>
+          <p class="why-body">No wireframes that gather dust. No mockups that never ship. Design and engineering move as a single discipline from the first keystroke.</p>
+        </div>
+        <div class="why-tags">
+          <span class="label why-tag">Production code</span>
+          <span class="label why-tag">Design system</span>
+          <span class="label why-tag">Zero rework</span>
+        </div>
+      </li>
+
+      <li class="why-item">
+        <span class="why-num label">03</span>
+        <div class="why-item-inner">
+          <h3 class="why-title">Tempo is the<br>deliverable.</h3>
+          <p class="why-body">We don't hand you a brand. We hand you a brand that moves. Scroll choreography, real-time 3D, motion grammar — tuned for how your audience feels time.</p>
+        </div>
+        <div class="why-tags">
+          <span class="label why-tag">Motion grammar</span>
+          <span class="label why-tag">60fps delivery</span>
+          <span class="label why-tag">Scroll direction</span>
+        </div>
+      </li>
+
+    </ul>
+  </section>
+
+  <!-- ========================================================
+       PROCESS — 4-step methodology timeline
+       ======================================================== -->
+  <section class="process" aria-label="How we work">
+    <div class="process-header">
+      <span class="label process-eyebrow">— Methodology</span>
+      <h2 class="process-heading">
+        How we<br>
+        <span class="word"><span class="process-heading-accent">build.</span></span>
+      </h2>
+    </div>
+
+    <ol class="process-steps" role="list">
+
+      <li class="process-step">
+        <div class="step-num-wrap">
+          <span class="step-num">01</span>
+          <div class="step-line" aria-hidden="true"></div>
+        </div>
+        <div class="step-body">
+          <h3 class="step-title">Discover</h3>
+          <p class="step-desc">Two-week diagnostic. We map your category, your rivals' blind spots, and the one truth your brand needs to own. No templates. No shortcuts.</p>
+          <div class="step-meta">
+            <span class="label step-tag">2 weeks</span>
+            <span class="label step-tag">Strategy</span>
+            <span class="label step-tag">Research</span>
+            <span class="label step-tag">Positioning</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="process-step">
+        <div class="step-num-wrap">
+          <span class="step-num">02</span>
+          <div class="step-line" aria-hidden="true"></div>
+        </div>
+        <div class="step-body">
+          <h3 class="step-title">Compose</h3>
+          <p class="step-desc">Visual identity, motion grammar, and voice converge into a single coherent system. We compose — not assemble — every element from first principles.</p>
+          <div class="step-meta">
+            <span class="label step-tag">4 weeks</span>
+            <span class="label step-tag">Identity</span>
+            <span class="label step-tag">Motion Grammar</span>
+            <span class="label step-tag">Type</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="process-step">
+        <div class="step-num-wrap">
+          <span class="step-num">03</span>
+          <div class="step-line" aria-hidden="true"></div>
+        </div>
+        <div class="step-body">
+          <h3 class="step-title">Build</h3>
+          <p class="step-desc">Design system, WebGL experiences, scroll choreography — shipped as production code. Every component is documented, versioned, and ready to scale.</p>
+          <div class="step-meta">
+            <span class="label step-tag">6 weeks</span>
+            <span class="label step-tag">Engineering</span>
+            <span class="label step-tag">WebGL / 3D</span>
+            <span class="label step-tag">Design System</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="process-step">
+        <div class="step-num-wrap">
+          <span class="step-num">04</span>
+        </div>
+        <div class="step-body">
+          <h3 class="step-title">Ship &amp; Tune</h3>
+          <p class="step-desc">Launch day is day one, not the finish line. We remain embedded for 30 days post-launch — measuring, iterating, and tuning the tempo until it's right.</p>
+          <div class="step-meta">
+            <span class="label step-tag">30 days</span>
+            <span class="label step-tag">Deploy</span>
+            <span class="label step-tag">Analytics</span>
+            <span class="label step-tag">Optimise</span>
+          </div>
+        </div>
+      </li>
+
+    </ol>
+  </section>
+
+  <!-- ========================================================
+       CHAPTERS — Horizontal pin, 4 panels
+       ======================================================== -->
+  <section class="chapters" id="process" aria-label="Our primitives">
+    <!-- Chapters scroll progress indicator -->
+    <div class="chapters-progress-bar" aria-hidden="true">
+      <div class="chapters-progress-fill"></div>
+    </div>
+    <div class="chapters-track">
+
+      <!-- Panel 01: Design System — charcoal -->
+      <article class="panel panel--charcoal" id="panel-design" aria-label="Design System">
+        <div class="panel-inner">
+          <div class="panel-left" data-num="01">
+            <span class="panel-num label">01 / Design System</span>
+            <div class="panel-bg-img" style="background-image: url('/assets/panel-01-design.jpg')" aria-hidden="true"></div>
+          </div>
+          <div class="panel-right">
+            <h2 class="panel-title">Build<br>fast, with<br>zero friction.</h2>
+            <p class="panel-body">
+              Tokens, components, grammar. The foundation everything else inherits from.
+            </p>
+            <a href="#" class="cta-pill" data-magnetic>
+              <span class="label">Explore the system</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 02: Asset Forge — teal -->
+      <article class="panel panel--teal" id="panel-asset" aria-label="Asset Forge">
+        <div class="panel-inner">
+          <div class="panel-left" data-num="02">
+            <span class="panel-num label">02 / Asset Forge</span>
+            <div class="panel-bg-img" style="background-image: url('/assets/panel-02-ai.jpg')" aria-hidden="true"></div>
+          </div>
+          <div class="panel-right">
+            <h2 class="panel-title">Imagery<br>that<br>reasons.</h2>
+            <p class="panel-body">
+              Generated assets with editorial intentionality baked in from the first prompt.
+            </p>
+            <a href="#" class="cta-pill">
+              <span class="label">See process</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 03: Runtime Layer — coral -->
+      <article class="panel panel--coral" id="panel-runtime" aria-label="Runtime Layer">
+        <div class="panel-inner">
+          <div class="panel-left" data-num="03">
+            <span class="panel-num label">03 / Runtime Layer</span>
+            <div class="panel-bg-img" style="background-image: url('/assets/panel-03-runtime.jpg')" aria-hidden="true"></div>
+          </div>
+          <div class="panel-right panel-right--dark">
+            <h2 class="panel-title">Pixels<br>with<br>physics.</h2>
+            <p class="panel-body">
+              Real-time 3D experiences that hold 60fps on any device.
+            </p>
+            <a href="#" class="cta-pill cta-pill--dark">
+              <span class="label">View demos</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 04: Motion Director — cream -->
+      <article class="panel panel--cream" id="panel-motion" aria-label="Motion Director">
+        <div class="panel-inner">
+          <div class="panel-left">
+            <span class="panel-num label panel-num--dark">04 / Motion Director</span>
+            <div class="panel-bg-img" style="background-image: url('/assets/panel-04-motion.jpg')" aria-hidden="true"></div>
+          </div>
+          <div class="panel-right panel-right--charcoal">
+            <h2 class="panel-title">Tempo<br>is the<br>brand.</h2>
+            <p class="panel-body">
+              Choreography, not animation. Scroll becomes the conductor.
+            </p>
+            <a href="#" class="cta-pill cta-pill--charcoal">
+              <span class="label">Watch reel</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       STACK — Scroll-triggered list with stroke fill
+       ======================================================== -->
+  <section class="stack-section" aria-label="What we compose">
+    <div class="stack-inner">
+      <span class="stack-label label">What we compose</span>
+
+      <ul class="stack-list" role="list">
+        <li class="stack-item">
+          <span class="item-num label">01</span>
+          <span class="item-name">Brand identity systems</span>
+          <div class="item-meta">
+            <span class="label item-tag">Tokens</span>
+            <span class="label item-tag">Components</span>
+            <span class="label item-tag">Grammar</span>
+          </div>
+          <span class="item-arrow label" aria-hidden="true">→</span>
+        </li>
+        <li class="stack-item">
+          <span class="item-num label">02</span>
+          <span class="item-name">AI-generated asset suites</span>
+          <div class="item-meta">
+            <span class="label item-tag">Editorial intent</span>
+            <span class="label item-tag">Prompt engineering</span>
+          </div>
+          <span class="item-arrow label" aria-hidden="true">→</span>
+        </li>
+        <li class="stack-item">
+          <span class="item-num label">03</span>
+          <span class="item-name">Real-time 3D environments</span>
+          <div class="item-meta">
+            <span class="label item-tag">WebGL</span>
+            <span class="label item-tag">60fps</span>
+            <span class="label item-tag">Any device</span>
+          </div>
+          <span class="item-arrow label" aria-hidden="true">→</span>
+        </li>
+        <li class="stack-item">
+          <span class="item-num label">04</span>
+          <span class="item-name">Scroll-choreographed sites</span>
+          <div class="item-meta">
+            <span class="label item-tag">GSAP</span>
+            <span class="label item-tag">ScrollTrigger</span>
+            <span class="label item-tag">Lenis</span>
+          </div>
+          <span class="item-arrow label" aria-hidden="true">→</span>
+        </li>
+        <li class="stack-item">
+          <span class="item-num label">05</span>
+          <span class="item-name">Motion direction</span>
+          <div class="item-meta">
+            <span class="label item-tag">Choreography</span>
+            <span class="label item-tag">Timing systems</span>
+          </div>
+          <span class="item-arrow label" aria-hidden="true">→</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       TESTIMONIALS — Three client quotes
+       ======================================================== -->
+  <section class="testimonials" aria-label="Client testimonials">
+    <div class="testi-header">
+      <span class="label testi-eyebrow">— Trusted by founders</span>
+      <h2 class="testi-heading">Words from people<br>we've shipped for.</h2>
+    </div>
+
+    <div class="testi-grid">
+
+      <article class="testi-card">
+        <div class="testi-quote-mark" aria-hidden="true">"</div>
+        <blockquote class="testi-quote">
+          The Foundry team treats motion like it's a vital sign of the brand. Our launch metrics doubled the projected baseline.
+        </blockquote>
+        <div class="testi-meta">
+          <img class="testi-avatar" src="/assets/avatar-1.jpg" alt="" loading="lazy" />
+          <div class="testi-attr">
+            <span class="testi-name">Maya Chen</span>
+            <span class="testi-role label">Co-founder · Auro</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="testi-card">
+        <div class="testi-quote-mark" aria-hidden="true">"</div>
+        <blockquote class="testi-quote">
+          They built our system in six weeks. We're still building features into it three years later. Worth every cent.
+        </blockquote>
+        <div class="testi-meta">
+          <img class="testi-avatar" src="/assets/avatar-2.jpg" alt="" loading="lazy" />
+          <div class="testi-attr">
+            <span class="testi-name">Daniel Roth</span>
+            <span class="testi-role label">Head of Brand · Verdant</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="testi-card">
+        <div class="testi-quote-mark" aria-hidden="true">"</div>
+        <blockquote class="testi-quote">
+          Our investor decks now look like the company we want to be. The site does the selling before the call.
+        </blockquote>
+        <div class="testi-meta">
+          <img class="testi-avatar" src="/assets/avatar-3.jpg" alt="" loading="lazy" />
+          <div class="testi-attr">
+            <span class="testi-name">Priya Anand</span>
+            <span class="testi-role label">CEO · Circuit</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       PRESS / RECOGNITION — Logo strip
+       ======================================================== -->
+  <section class="press" aria-label="Press and awards">
+    <div class="press-inner">
+      <span class="label press-label">As featured in</span>
+      <div class="press-list">
+        <span class="press-item">Awwwards · SOTD</span>
+        <span class="press-sep" aria-hidden="true">·</span>
+        <span class="press-item">CSS Design Awards</span>
+        <span class="press-sep" aria-hidden="true">·</span>
+        <span class="press-item">FWA</span>
+        <span class="press-sep" aria-hidden="true">·</span>
+        <span class="press-item">Brand New</span>
+        <span class="press-sep" aria-hidden="true">·</span>
+        <span class="press-item">It's Nice That</span>
+        <span class="press-sep" aria-hidden="true">·</span>
+        <span class="press-item">Type Directors Club</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       OUTRO — 50/50 split: black torus left / coral right
+       ======================================================== -->
+  <section class="outro" id="contact" aria-label="Contact">
+
+    <!-- Left: dark, torus lives here via uPhase shader shift -->
+    <div class="outro-left" aria-hidden="true">
+      <span class="outro-left-label label">Foundry / Studio</span>
+    </div>
+
+    <!-- Right: coral panel with full nav + CTA -->
+    <div class="outro-right">
+      <div class="outro-right-inner">
+
+        <div class="outro-top">
+          <div class="outro-status">
+            <span class="status-dot status-dot--dark" aria-hidden="true"></span>
+            <span class="label">Open for new work</span>
+          </div>
+          <nav class="outro-nav" aria-label="Outro navigation">
+            <a href="#work"    class="label">Work</a>
+            <a href="#process" class="label">Process</a>
+            <a href="#"        class="label">Lab</a>
+          </nav>
+        </div>
+
+        <div class="outro-center">
+          <h2 class="outro-headline">
+            <span class="outro-headline-line"><span>Own</span></span>
+            <span class="outro-headline-line"><span>what's</span></span>
+            <span class="outro-headline-line"><span>next.</span></span>
+          </h2>
+        </div>
+
+        <div class="outro-bottom">
+          <a href="mailto:hello@foundry.studio" class="cta-pill cta-pill--dark">
+            <span class="label">Start a project</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <span class="outro-email label">hello@foundry.studio</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       CTA BAND — Full-height contact prompt
+       ======================================================== -->
+  <section class="cta-band" aria-label="Start a project">
+    <div class="cta-orb cta-orb--1" aria-hidden="true"></div>
+    <div class="cta-orb cta-orb--2" aria-hidden="true"></div>
+    <div class="cta-orb cta-orb--3" aria-hidden="true"></div>
+
+    <div class="cta-band-inner">
+      <span class="label cta-band-eyebrow">— Open for 2026 Q3</span>
+
+      <h2 class="cta-band-headline">
+        <span class="cta-band-line"><span>Ready to move</span></span>
+        <span class="cta-band-line cta-band-line--accent"><span>at tempo?</span></span>
+      </h2>
+
+      <p class="cta-band-sub">
+        We take on 4 engagements per quarter.<br>
+        One slot remains open for Q3 2026.
+      </p>
+
+      <div class="cta-band-actions">
+        <a href="mailto:hello@foundry.studio"
+           class="cta-band-email"
+           data-magnetic
+           data-scramble="hello@foundry.studio">
+          hello@foundry.studio
+        </a>
+        <a href="#" class="cta-pill cta-band-pill" data-magnetic>
+          <span class="label">Book a call</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       FOOTER
+       ======================================================== -->
+  <footer class="footer">
+    <div class="divider"></div>
+
+    <div class="footer-inner">
+      <div class="footer-col footer-col--brand">
+        <div class="footer-mark">
+          <span class="footer-f" aria-hidden="true">F</span>
+          <span class="label">Foundry / Studio</span>
+        </div>
+        <p class="footer-blurb">
+          Brand systems, AI imagery, real-time 3D, and scroll motion. We compose the loop.
+        </p>
+        <form class="footer-newsletter" id="footer-newsletter">
+          <span class="label footer-newsletter-label">Field notes</span>
+          <div class="newsletter-input-wrap">
+            <input
+              type="email"
+              class="newsletter-input"
+              placeholder="hello@founder.com"
+              aria-label="Email for newsletter"
+              required
+            />
+            <button type="submit" class="newsletter-btn label" aria-label="Subscribe">
+              Subscribe →
+            </button>
+          </div>
+          <p class="newsletter-hint label">Monthly. No noise.</p>
+        </form>
+      </div>
+
+      <div class="footer-col">
+        <span class="label footer-col-head">Primitives</span>
+        <ul role="list">
+          <li><a href="#" class="label">Design System</a></li>
+          <li><a href="#" class="label">Asset Forge</a></li>
+          <li><a href="#" class="label">Runtime Layer</a></li>
+          <li><a href="#" class="label">Motion Director</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <span class="label footer-col-head">Studio</span>
+        <ul role="list">
+          <li><a href="#" class="label">About</a></li>
+          <li><a href="#" class="label">Process</a></li>
+          <li><a href="#" class="label">Lab</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <span class="label footer-col-head">Contact</span>
+        <ul role="list">
+          <li><a href="mailto:hello@foundry.studio" class="label">hello@foundry.studio</a></li>
+          <li><a href="#" class="label">LinkedIn</a></li>
+          <li><a href="#" class="label">Twitter / X</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="label">© MMXXVI Foundry Studio</span>
+      <span class="label footer-bottom-center">Composed in the browser · 60fps · no compromise</span>
+      <a href="mailto:mayukhj2407@gmail.com"
+         class="label footer-credit"
+         aria-label="Made by Mayukh Jain">
+        Crafted by <span class="footer-credit-name">Mayukh Jain</span>
+      </a>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

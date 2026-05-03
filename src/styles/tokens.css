@@ -1,0 +1,121 @@
+/* ============================================================
+   FOUNDRY STUDIO — DESIGN TOKENS
+   All downstream styles inherit from these custom properties.
+   Import this file first, before any component styles.
+   ============================================================ */
+
+:root {
+  /* ---- Surfaces ---- */
+  --surface-bg:    #0A0A0A;
+  --surface-ink:   #F2EEE5;
+  --surface-mid:   #1A1916;
+
+  /* ---- Coral accent ramp (dominant — ~60% of accent surfaces) ---- */
+  --coral-50:  #FEF0EC;
+  --coral-100: #FBDAD2;
+  --coral-200: #F6B4A1;
+  --coral-300: #EF8D73;
+  --coral-400: #E7693F;
+  --coral-500: #E0613A;
+  --coral-600: #C04B28;
+  --coral-700: #93371A;
+  --coral-800: #64220D;
+  --coral-900: #3A1108;
+
+  /* ---- Teal accent ramp (calm / trust) ---- */
+  --teal-50:  #E8F7F4;
+  --teal-100: #BEEAE2;
+  --teal-200: #7DD4C5;
+  --teal-300: #3DBEA8;
+  --teal-400: #22AF93;
+  --teal-500: #1FA88A;
+  --teal-600: #178A71;
+  --teal-700: #0F6553;
+  --teal-800: #084035;
+  --teal-900: #06322A;
+
+  /* ---- Amber accent ramp (highlights) ---- */
+  --amber-50:  #FDF8EC;
+  --amber-100: #FAEDC6;
+  --amber-200: #F4D88B;
+  --amber-300: #EEC151;
+  --amber-400: #E8A818;
+  --amber-500: #D49510;
+  --amber-600: #AA760C;
+  --amber-700: #7D5609;
+  --amber-800: #503605;
+  --amber-900: #2A1C02;
+
+  /* ---- Semantic accent aliases ---- */
+  --accent:           var(--coral-500);
+  --accent-dim:       var(--coral-700);
+  --accent-secondary: var(--teal-500);
+  --accent-tertiary:  var(--amber-500);
+
+  /* ---- Typography ---- */
+  /* Add @font-face for Tiempos Headline and Styrene B here if licensed */
+  --font-display: 'Tiempos Headline', 'Noto Serif Display', Georgia, serif;
+  --font-sans:    'Styrene B', 'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ---- Type scale (fluid clamp) ---- */
+  --text-h1:    clamp(3rem,   6vw + 1rem,   9rem);
+  --text-h2:    clamp(2rem,   4vw + 0.5rem, 5.5rem);
+  --text-h3:    clamp(1.6rem, 3vw + 0.4rem, 4.6rem);
+  --text-body:  1rem;
+  --text-label: 0.6875rem; /* 11px */
+
+  /* ---- Line heights ---- */
+  --leading-tight:   1.08;
+  --leading-display: 1.15;
+  --leading-body:    1.7;
+
+  /* ---- Letter spacing ---- */
+  --tracking-label:  0.16em;
+  --tracking-tight:  -0.025em;
+  --tracking-normal: 0;
+
+  /* ---- Layout ---- */
+  --space-safe-h:        4vw;
+  --space-safe-h-mobile: 1.5rem;
+  --space-section-v:     18vh;
+  --space-xs:  0.25rem;
+  --space-sm:  0.5rem;
+  --space-md:  1rem;
+  --space-lg:  2rem;
+  --space-xl:  4rem;
+  --space-2xl: 8rem;
+
+  /* ---- Borders ---- */
+  --border-hairline: 0.5px solid rgba(242, 238, 229, 0.18);
+  --border-standard: 1px  solid rgba(242, 238, 229, 0.28);
+  --border-active:   2px  solid var(--coral-500);
+
+  /* ---- Radii ---- */
+  --radius-pill: 100px;
+  --radius-sm:   4px;
+
+  /* ---- Z-layers ---- */
+  --z-canvas:  0;
+  --z-content: 10;
+  --z-nav:     100;
+  --z-loader:  200;
+
+  /* ---- Easing ---- */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- Duration ---- */
+  --dur-fast: 0.25s;
+  --dur-base: 0.4s;
+  --dur-slow: 0.8s;
+}
+
+/* ---- Light mode ---- */
+[data-theme="light"] {
+  --surface-bg:  #F2EEE5;
+  --surface-ink: #0A0A0A;
+  --surface-mid: #E8E3D8;
+  --border-hairline: 0.5px solid rgba(10, 10, 10, 0.14);
+  --border-standard: 1px  solid rgba(10, 10, 10, 0.22);
+}
