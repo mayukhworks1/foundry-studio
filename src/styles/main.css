@@ -11,6 +11,136 @@
   padding: 0;
 }
 
+/* ============================================================
+   MOBILE GATE — shown on ≤ 900px, dismissed via checkbox hack
+   Pure CSS: zero JS dependency, works even if the script crashes
+   ============================================================ */
+
+/* Hidden checkbox — purely functional, never visible */
+.mobile-gate-dismiss-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+/* Gate: hidden on desktop, shown on mobile */
+.mobile-gate {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  /* Show gate on mobile */
+  .mobile-gate {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: #0a0a0a;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+
+  /* When checkbox is checked, hide the gate */
+  .mobile-gate-dismiss-input:checked ~ .mobile-gate {
+    display: none;
+  }
+
+  /* Also hide the loader behind the gate */
+  .mobile-gate-dismiss-input:not(:checked) ~ #loader {
+    display: none !important;
+  }
+}
+
+.mobile-gate-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  max-width: 340px;
+}
+
+.mobile-gate-logo {
+  width: 56px;
+  height: 56px;
+  border: 0.5px solid rgba(242, 238, 229, 0.15);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-gate-f {
+  font-family: 'Noto Serif Display', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #F2EEE5;
+  line-height: 1;
+}
+
+.mobile-gate-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(242, 238, 229, 0.4);
+}
+
+.mobile-gate-title {
+  font-family: 'Noto Serif Display', Georgia, serif;
+  font-size: clamp(2.25rem, 9vw, 3rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #F2EEE5;
+}
+
+.mobile-gate-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: rgba(242, 238, 229, 0.45);
+}
+
+/* Hairline accent above "View anyway" */
+.mobile-gate-inner::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, transparent, rgba(224, 97, 58, 0.6));
+  margin: 0.5rem 0;
+}
+
+.mobile-gate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.575rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(242, 238, 229, 0.55);
+  border: 0.5px solid rgba(242, 238, 229, 0.15);
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s, border-color 0.3s, background 0.3s;
+  margin-top: 0.5rem;
+  user-select: none;
+}
+
+.mobile-gate-btn:hover,
+.mobile-gate-btn:active {
+  color: #F2EEE5;
+  border-color: rgba(224, 97, 58, 0.5);
+  background: rgba(224, 97, 58, 0.06);
+}
+
 /* ---- Custom cursor (desktop only) ---- */
 @media (pointer: fine) {
   * { cursor: none !important; }

@@ -26,6 +26,28 @@
 <body>
 
   <!-- ========================================================
+       MOBILE GATE — pure CSS, zero JS dependency
+       Shown on screens ≤ 900px; dismissed via checkbox hack
+       ======================================================== -->
+  <input type="checkbox" id="mobile-gate-dismiss" class="mobile-gate-dismiss-input" aria-hidden="true" />
+  <div class="mobile-gate" id="mobile-gate" aria-modal="true" role="dialog" aria-label="Desktop recommended">
+    <div class="mobile-gate-inner">
+      <div class="mobile-gate-logo">
+        <span class="mobile-gate-f">F</span>
+      </div>
+      <p class="mobile-gate-eyebrow">Foundry Studio</p>
+      <h1 class="mobile-gate-title">Built for<br>the big screen.</h1>
+      <p class="mobile-gate-body">
+        This experience uses real-time 3D, WebGL, and<br>
+        scroll choreography — designed for desktop.
+      </p>
+      <label for="mobile-gate-dismiss" class="mobile-gate-btn">
+        View anyway <span aria-hidden="true">→</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ========================================================
        LOADER
        ======================================================== -->
   <div id="loader" aria-hidden="true" role="presentation">
