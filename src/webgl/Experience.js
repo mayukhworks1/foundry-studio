@@ -4,17 +4,35 @@ import ParticleTorus from './ParticleTorus.js'
 /* Singleton — Bruno Simon pattern */
 let instance = null
 
+/* Quick WebGL availability check before we even try to construct */
+function isWebGLSupported() {
+  try {
+    const test = document.createElement('canvas')
+    return !!(
+      test.getContext('webgl2') ||
+      test.getContext('webgl') ||
+      test.getContext('experimental-webgl')
+    )
+  } catch (_) {
+    return false
+  }
+}
+
 export default class Experience {
   constructor(canvas) {
     if (instance) return instance
-    instance = this
 
+    if (!canvas) throw new Error('No canvas element provided')
+    if (!isWebGLSupported()) throw new Error('WebGL not supported on this device')
+
+    instance = this
     this.canvas = canvas
 
     this.sizes = {
       width:      window.innerWidth,
       height:     window.innerHeight,
-      pixelRatio: Math.min(window.devicePixelRatio, 1.5),
+      /* Cap pixel ratio at 2 on mobile to avoid GPU overload */
+      pixelRatio: Math.min(window.devicePixelRatio, 2),
     }
 
     this.clock = new THREE.Clock()
@@ -42,10 +60,12 @@ export default class Experience {
   }
 
   _setRenderer() {
+    const isMobile = window.innerWidth < 768
     this.renderer = new THREE.WebGLRenderer({
-      canvas:    this.canvas,
-      antialias: true,
-      alpha:     true,
+      canvas:     this.canvas,
+      antialias:  !isMobile,   /* skip MSAA on mobile — big perf win */
+      alpha:      true,
+      powerPreference: 'high-performance',
     })
     this.renderer.setSize(this.sizes.width, this.sizes.height)
     this.renderer.setPixelRatio(this.sizes.pixelRatio)

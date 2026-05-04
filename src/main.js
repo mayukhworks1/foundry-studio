@@ -1,5 +1,6 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { inject as injectAnalytics } from '@vercel/analytics'
 
 import { initLenis }                             from './motion/lenis.js'
 import { runLoader, runHeroReveal,
@@ -9,12 +10,29 @@ import { initMagnetic, initScramble,
          initCardTilt, applyVelocitySkew }       from './motion/effects.js'
 import Experience                                from './webgl/Experience.js'
 
+/* ---- 0. Vercel Analytics ---- */
+injectAnalytics()
+
 /* ---- 1. Register GSAP plugins ---- */
 gsap.registerPlugin(ScrollTrigger)
 
-/* ---- 2. WebGL experience ---- */
-const canvas     = document.getElementById('canvas')
-const experience = new Experience(canvas)
+/* ---- 2. WebGL experience — graceful fallback on mobile/WebGL failure ---- */
+const canvas = document.getElementById('canvas')
+
+/* No-op stand-in used when WebGL is unavailable (old iOS, low-memory, etc.) */
+const noopExperience = {
+  update:     () => {},
+  setUniform: () => {},
+  destroy:    () => {},
+}
+
+let experience = noopExperience
+try {
+  experience = new Experience(canvas)
+} catch (err) {
+  console.warn('[Foundry] WebGL unavailable, falling back to CSS-only mode:', err.message)
+  if (canvas) canvas.style.display = 'none'
+}
 
 /* ---- 3. Smooth scroll ---- */
 const lenis = initLenis()

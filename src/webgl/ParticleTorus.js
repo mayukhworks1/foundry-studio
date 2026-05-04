@@ -12,10 +12,11 @@ export default class ParticleTorus {
     this.experience = experience
     this.scene      = experience.scene
 
-    /* Particle count — tuned for smooth 60fps on most hardware */
-    const lowEnd    = navigator.hardwareConcurrency < 4
-    this.RINGS      = lowEnd ? 40  : 70
-    this.PER_RING   = lowEnd ? 35  : 55
+    /* Particle count — tuned for 60fps across device tiers */
+    const isMobile  = window.innerWidth < 768
+    const lowEnd    = isMobile || navigator.hardwareConcurrency < 4
+    this.RINGS      = isMobile ? 28  : (lowEnd ? 40  : 70)
+    this.PER_RING   = isMobile ? 20  : (lowEnd ? 35  : 55)
 
     /* Smoothed mouse position */
     this.mouse       = new THREE.Vector2(0, 0)
