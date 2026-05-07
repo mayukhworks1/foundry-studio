@@ -82,23 +82,40 @@ export function runHeroReveal(experience) {
   const h1 = document.querySelector('.hero-left-text')
   if (h1 && !reduced) {
     const chars = splitToChars(h1)
-    gsap.set(chars, { y: '105%' })
-    tl.to(chars, { y: '0%', duration: 0.95, ease: 'expo.out', stagger: 0.035 }, 0.25)
+    /* fromTo: GSAP sets y:105% immediately (no CSS dependency), then reveals */
+    tl.fromTo(chars,
+      { y: '105%' },
+      { y: '0%', duration: 0.95, ease: 'expo.out', stagger: 0.035 },
+      0.25
+    )
   }
 
-  /* 3. Accent word */
+  /* 3. Accent word — fromTo so no CSS transform dependency */
   const accent = document.querySelector('.hero-right-text .word > span')
   if (accent && !reduced) {
-    tl.to(accent, { y: '0%', duration: 1.1, ease: 'expo.out' }, 0.5)
+    tl.fromTo(accent,
+      { y: '110%' },
+      { y: '0%', duration: 1.1, ease: 'expo.out' },
+      0.5
+    )
   }
 
-  /* 4. Meta + tagline */
-  tl.to('.hero-meta',              { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 0.8)
-  tl.to('.hero-tagline',           { opacity: 1, duration: 0.01 }, 0.9)
-  tl.to('.hero-tagline-word > span', {
-    y: '0%', opacity: 0.55,
-    duration: 0.75, ease: 'expo.out', stagger: 0.05,
-  }, 0.95)
+  /* 4. Meta + tagline — fromTo so visible without JS/CSS dependency */
+  tl.fromTo('.hero-meta',
+    { opacity: 0, y: 16 },
+    { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' },
+    0.8
+  )
+  tl.fromTo('.hero-tagline',
+    { opacity: 0 },
+    { opacity: 1, duration: 0.01 },
+    0.9
+  )
+  tl.fromTo('.hero-tagline-word > span',
+    { y: '100%', opacity: 0 },
+    { y: '0%', opacity: 0.55, duration: 0.75, ease: 'expo.out', stagger: 0.05 },
+    0.95
+  )
 
   /* 5. Nav */
   tl.fromTo('.nav',
@@ -120,9 +137,15 @@ export function runHeroReveal(experience) {
    ============================================================ */
 export function setupScrollTriggers(experience) {
 
-  /* ── Hero badge + scroll hint ── */
-  gsap.to('.hero-badge',       { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 1.8 })
-  gsap.to('.hero-scroll-hint', { opacity: 1,        duration: 1.0, ease: 'power2.out', delay: 2.4 })
+  /* ── Hero badge + scroll hint — fromTo so no CSS dependency ── */
+  gsap.fromTo('.hero-badge',
+    { opacity: 0, y: 8 },
+    { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 1.8 }
+  )
+  gsap.fromTo('.hero-scroll-hint',
+    { opacity: 0 },
+    { opacity: 1, duration: 1.0, ease: 'power2.out', delay: 2.4 }
+  )
 
   /* ── Page progress bar (scrubbed) ── */
   ScrollTrigger.create({

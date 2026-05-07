@@ -49,8 +49,14 @@
     display: none;
   }
 
-  /* Also hide the loader behind the gate */
+  /* While gate is visible, hide the loader behind it */
   .mobile-gate-dismiss-input:not(:checked) ~ #loader {
+    display: none !important;
+  }
+
+  /* When gate is dismissed, also keep loader hidden —
+     skip the loader experience on mobile entirely */
+  .mobile-gate-dismiss-input:checked ~ #loader {
     display: none !important;
   }
 }
@@ -300,6 +306,13 @@ img {
    LOADER
    ============================================================ */
 
+/* CSS fallback: auto-hide loader after 5 s if GSAP never fires.
+   GSAP's inline `display:none` overrides this animation instantly
+   when it works normally. This is purely a safety net. */
+@keyframes loader-force-out {
+  to { opacity: 0; pointer-events: none; }
+}
+
 #loader {
   position: fixed;
   inset: 0;
@@ -309,6 +322,8 @@ img {
   align-items: center;
   justify-content: center;
   transform-origin: top;
+  /* Fade to transparent after 4.5 s (0.8 s fade duration) */
+  animation: loader-force-out 0.8s ease-out 4.5s 1 forwards;
 }
 
 .loader-count {
@@ -563,8 +578,7 @@ img {
 }
 
 .hero-meta {
-  opacity: 0;
-  transform: translateY(16px);
+  /* opacity/transform removed — GSAP fromTo() owns the initial state */
 }
 
 .hero-contact-btn {
@@ -610,8 +624,7 @@ img {
   flex-direction: column;
   align-items: flex-end;
   gap: 0.25rem;
-  opacity: 0;
-  transform: translateY(16px);
+  /* opacity/transform removed — GSAP fromTo() owns initial state */
 }
 
 .hero-tagline-word {
@@ -621,8 +634,7 @@ img {
 
 .hero-tagline-word > span {
   display: inline-block;
-  opacity: 0.5;
-  transform: translateY(100%);
+  /* opacity/transform removed — GSAP fromTo() sets from:{y:100%,opacity:0} */
 }
 
 /* Shared word mask — used for both hero and any word-reveal */
@@ -633,7 +645,8 @@ img {
 
 .word > span {
   display: inline-block;
-  transform: translateY(110%);
+  /* Initial transform removed — GSAP fromTo() sets it in JS before animating.
+     This means content is visible if JS/GSAP fails (progressive enhancement). */
   will-change: transform;
 }
 
@@ -1212,9 +1225,8 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  opacity: 0;
-  transform: translateY(8px);
   margin-bottom: 1.5rem;
+  /* opacity/transform removed — GSAP fromTo() owns initial state */
 }
 
 .hero-badge-dot {
@@ -1235,8 +1247,8 @@ img {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  opacity: 0;
   z-index: var(--z-content);
+  /* opacity:0 removed — GSAP fromTo() owns initial state */
 }
 
 .scroll-line {
@@ -2356,15 +2368,12 @@ img {
    ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  .word > span,
-  .intro-word > span,
-  .hero-tagline-word > span {
-    transform: translateY(0) !important;
-  }
+  /* .word > span, .hero-meta, .hero-tagline etc. no longer have CSS hidden
+     states — GSAP fromTo() owns them. The reduced flag in timeline.js
+     skips the gsap.fromTo() calls entirely when prefers-reduced-motion
+     is set, so elements render at their natural (visible) CSS positions. */
 
-  .hero-meta,
-  .hero-tagline {
-    opacity: 1 !important;
+  .intro-word > span {
     transform: translateY(0) !important;
   }
 
@@ -2374,6 +2383,12 @@ img {
   }
 
   .status-dot {
+    animation: none;
+  }
+
+  /* Disable loader CSS auto-timeout animation for reduced motion
+     (GSAP still dismisses loader normally in reduced mode) */
+  #loader {
     animation: none;
   }
 }
