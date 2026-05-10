@@ -1,3 +1,5 @@
+precision mediump float;
+
 uniform vec3  uColor;
 uniform vec3  uColorAccent;
 uniform vec3  uColorGlow;
@@ -9,14 +11,15 @@ varying float vDepth;
 varying float vRand;
 
 void main() {
+
   /* ---- Soft circular point with crisp centre ---- */
   float d     = length(gl_PointCoord - vec2(0.5));
   float alpha = smoothstep(0.50, 0.02, d);
 
   if (alpha < 0.005) discard;
 
-  /* ---- Warm colour drift: base shifts gently over time per-particle ---- */
-  float warmth   = 0.5 + 0.5 * sin(vRand * 6.2832 + uTime * 0.25);
+  /* ---- Warm colour drift per-particle over time ---- */
+  float warmth    = 0.5 + 0.5 * sin(vRand * 6.2832 + uTime * 0.25);
   vec3  baseColor = mix(uColor, uColorGlow, warmth * 0.15);
 
   /* ---- Coral accent ~2% of dots ---- */

@@ -60,12 +60,14 @@ export default class Experience {
   }
 
   _setRenderer() {
-    const isMobile = window.innerWidth < 768
     this.renderer = new THREE.WebGLRenderer({
-      canvas:     this.canvas,
-      antialias:  !isMobile,   /* skip MSAA on mobile — big perf win */
-      alpha:      true,
-      powerPreference: 'high-performance',
+      canvas:          this.canvas,
+      antialias:       false,   /* off for all — point particles don't benefit;
+                                   antialias causes driver issues on some Windows GPUs */
+      alpha:           true,
+      premultipliedAlpha: false, /* safer for additive blending across drivers */
+      powerPreference: 'default', /* 'high-performance' can force wrong GPU on Windows */
+      failIfMajorPerformanceCaveat: false, /* allow software rasteriser as fallback */
     })
     this.renderer.setSize(this.sizes.width, this.sizes.height)
     this.renderer.setPixelRatio(this.sizes.pixelRatio)

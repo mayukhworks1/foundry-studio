@@ -12,11 +12,16 @@ export default class ParticleTorus {
     this.experience = experience
     this.scene      = experience.scene
 
-    /* Particle count — tuned for 60fps across device tiers */
-    const isMobile  = window.innerWidth < 768
-    const lowEnd    = isMobile || navigator.hardwareConcurrency < 4
-    this.RINGS      = isMobile ? 28  : (lowEnd ? 40  : 70)
-    this.PER_RING   = isMobile ? 20  : (lowEnd ? 35  : 55)
+    /*
+     * Particle count tiers — tuned for 60fps across device classes.
+     * isMobile: fewest particles, lowest GPU load.
+     * lowEnd:   mid count for Intel integrated / budget discrete.
+     * default:  full quality for dedicated GPU.
+     */
+    const isMobile = window.innerWidth < 768
+    const lowEnd   = isMobile || navigator.hardwareConcurrency < 4
+    this.RINGS    = isMobile ? 28  : (lowEnd ? 44  : 70)
+    this.PER_RING = isMobile ? 20  : (lowEnd ? 36  : 55)
 
     /* Smoothed mouse position */
     this.mouse       = new THREE.Vector2(0, 0)
@@ -42,9 +47,8 @@ export default class ParticleTorus {
         const phi = (p / this.PER_RING) * TWO_PI
         const tw  = phi + theta * TWIST
 
-        /* Store initial torus positions for Three.js bounding computations */
         positions[i * 3 + 0] = (R_MAJOR + R_MINOR * Math.cos(tw)) * Math.cos(theta)
-        positions[i * 3 + 1] = R_MINOR * Math.sin(tw)
+        positions[i * 3 + 1] =  R_MINOR * Math.sin(tw)
         positions[i * 3 + 2] = (R_MAJOR + R_MINOR * Math.cos(tw)) * Math.sin(theta)
 
         thetas[i] = theta
@@ -62,10 +66,11 @@ export default class ParticleTorus {
   }
 
   _buildMaterial() {
-    /* Displacement map — falls back gracefully if asset not yet present */
-    const loader        = new THREE.TextureLoader()
-    const displacementMap = loader.load('/assets/displacement.png')
-
+    /*
+     * No texture — vertex texture fetching is unsupported on Intel integrated
+     * GPUs (very common on Windows laptops). Displacement is now procedural
+     * GLSL in the vertex shader, which works on all WebGL1 / WebGL2 devices.
+     */
     this.material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
@@ -75,13 +80,13 @@ export default class ParticleTorus {
         uPhase:       { value: 0 },
         uIntro:       { value: 0 },
         uMouse:       { value: new THREE.Vector2(0, 0) },
-        uMap:         { value: displacementMap },
-        uColor:       { value: new THREE.Color('#F2EEE5') },  /* cream base */
-        uColorAccent: { value: new THREE.Color('#E0613A') },  /* coral accent */
-        uColorGlow:   { value: new THREE.Color('#FFE5C8') },  /* warm glow tint */
+        uColor:       { value: new THREE.Color('#F2EEE5') },  /* cream */
+        uColorAccent: { value: new THREE.Color('#E0613A') },  /* coral */
+        uColorGlow:   { value: new THREE.Color('#FFE5C8') },  /* warm glow */
       },
       transparent: true,
       depthWrite:  false,
+      depthTest:   false,   /* avoids z-fighting artefacts on some drivers */
       blending:    THREE.AdditiveBlending,
     })
   }
@@ -99,11 +104,12 @@ export default class ParticleTorus {
   }
 
   setUniform(name, value) {
-    this.material.uniforms[name].value = value
+    if (this.material.uniforms[name] !== undefined) {
+      this.material.uniforms[name].value = value
+    }
   }
 
   update(elapsedTime) {
-    /* Smooth mouse with lerp 0.08 */
     this.mouse.x += (this.targetMouse.x - this.mouse.x) * 0.08
     this.mouse.y += (this.targetMouse.y - this.mouse.y) * 0.08
 
